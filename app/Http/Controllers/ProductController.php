@@ -6,10 +6,19 @@ use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantPrice;
 use App\Models\Variant;
+use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+
+    private $productRepo;
+
+    public function __construct(ProductRepository $productRepository)
+    {
+        $this->productRepo = $productRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +26,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('products.index');
+        $products = $this->productRepo->list();
+        $variants = Variant::select('id', 'title')->get();
+        $product_variants = ProductVariant::select('id', 'variant', 'variant_id', 'product_id')->get();
+
+        return view('products.index', compact('products', 'variants', 'product_variants'));
     }
 
     /**
@@ -28,7 +41,10 @@ class ProductController extends Controller
     public function create()
     {
         $variants = Variant::all();
-        return view('products.create', compact('variants'));
+        $product_variants1 = $this->productRepo->productVariantList1();
+        $product_variants2 = $this->productRepo->productVariantList2();
+
+        return view('products.create', compact('variants', 'product_variants1', 'product_variants2'));
     }
 
     /**
@@ -51,7 +67,8 @@ class ProductController extends Controller
      */
     public function show($product)
     {
-
+        $product = Product::find($product);
+        return view('products.show', compact('product'));
     }
 
     /**
@@ -63,7 +80,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $variants = Variant::all();
-        return view('products.edit', compact('variants'));
+        return view('products.edit', compact('variants', 'product'));
     }
 
     /**

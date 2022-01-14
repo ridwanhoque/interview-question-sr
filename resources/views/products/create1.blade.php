@@ -91,44 +91,25 @@
                         <tbody>
                             <tr>
                                 <td class="col-md-3">
-                                    <select class="form-control col-md-12" id="no_pointer_use1" name="variant1" disabled="true"
+                                    <select class="form-control col-md-12" name="product_variant"
                                         onchange="loadProductVariants(this.value)">
                                         <option value="">Choose</option>
                                         @foreach ($variants as $item)
-                                        <option {{ $item->title == "Color" ? 'selected':'' }}>{{ $item->title }}</option>
+                                        <option>{{ $item->title }}</option>
                                         @endforeach
                                     </select>
                                 </td>
                                 <td class="col-md-9">
-                                    <select name="product_variant1[]" id="selectProductVariantPrice" class="select_product_variant_price select_1 multiple-select col-md-12" multiple="multiple">
-                                        @foreach ($product_variants1 as $product_variant1)
-                                        <option value="{{ $product_variant1->id }}">
-                                            {{ $product_variant1->variant ?? '' }}
+                                    <select name="" id="selectProductVariantPrice" class="select_product_variant_price col-md-12 select" multiple data-mdb-filter="true">
+                                        @foreach ($product_variants as $product_variant)
+                                        <option value="{{ $product_variant->id }}">
+                                            {{ $product_variant->variant ?? '' }}
                                         </option>
                                         @endforeach
                                     </select>
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="col-md-3">
-                                    <select class="form-control col-md-12" id="no_pointer_use2" name="variant2"
-                                        onchange="loadProductVariants(this.value)">
-                                        <option value="">Choose</option>
-                                        @foreach ($variants as $item)
-                                        <option {{ $item->title == "Size" ? 'selected':'' }}>{{ $item->title }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td class="col-md-9">
-                                    <select name="product_variant2[]" id="selectProductVariantPrice2" class="select_product_variant_price select_1 multiple-select col-md-12" multiple="multiple">
-                                        @foreach ($product_variants2 as $product_variant2)
-                                        <option value="{{ $product_variant2->id }}">
-                                            {{ $product_variant2->variant ?? '' }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                            </tr>
+
                         </tbody>
                         
                     </table>
@@ -177,76 +158,12 @@
 @endsection
 
 @push('scripts')
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function(){
         // $('.multiple-select').select2();
-
-        $('#no_pointer_use1').attr("style", "pointer-events: none;");
-        $('#no_pointer_use2 option:not(:selected)').prop('disabled', true);
-
-
     });
 </script>
-
-<script>
-    function loadProductVariants(variantId){
-        $.ajax({
-            url: "{{ url('api/get_product_variants') }}",
-            type: GET,
-            success: function(data){
-                console.log(data);
-            }
-        });
-    }
-
-   
-   
-    $('.add_another_row').on('click', function() {
-       //addRow('productVariantPriceTable');
-    });
-   
-
-
-
-    $('#removeProductVariantPrice').click(function(){
-        $('#productVariantPriceTable tr:last').remove();
-    });
-
-
-
-    $(function() {
-     $('.select_product_variant_price').change(function() {
-        $('#myTable').html('');
-
-        let option_count = 1;
-        $('.select_product_variant_price').each(function(){
-
-        });
-
-
-        let options_total = $('.select_product_variant_price option:selected').length;
-        alert(options_total);
-        for (var i = 0; i<options_total; i++) {
-            var row = '<tr>\
-                <td>\
-                    <div></div>\
-                <td>\
-                    <input type="text" name="price[]" size="30" />\
-                </td>\
-                <td>\
-                    <input type="text" name="stock[]" size="35" />        \
-                </td>\
-            </tr>';
-            row = $(row);
-            $('#myTable').append(row);
-        }
-    });
-});
-</script>
-
-
 @endpush

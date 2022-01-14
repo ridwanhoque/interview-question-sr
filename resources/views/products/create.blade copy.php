@@ -91,39 +91,19 @@
                         <tbody>
                             <tr>
                                 <td class="col-md-3">
-                                    <select class="form-control col-md-12" id="no_pointer_use1" name="variant1" disabled="true"
+                                    <select class="form-control col-md-12" name="product_variant"
                                         onchange="loadProductVariants(this.value)">
                                         <option value="">Choose</option>
                                         @foreach ($variants as $item)
-                                        <option {{ $item->title == "Color" ? 'selected':'' }}>{{ $item->title }}</option>
+                                        <option>{{ $item->title }}</option>
                                         @endforeach
                                     </select>
                                 </td>
                                 <td class="col-md-9">
-                                    <select name="product_variant1[]" id="selectProductVariantPrice" class="select_product_variant_price select_1 multiple-select col-md-12" multiple="multiple">
-                                        @foreach ($product_variants1 as $product_variant1)
-                                        <option value="{{ $product_variant1->id }}">
-                                            {{ $product_variant1->variant ?? '' }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-3">
-                                    <select class="form-control col-md-12" id="no_pointer_use2" name="variant2"
-                                        onchange="loadProductVariants(this.value)">
-                                        <option value="">Choose</option>
-                                        @foreach ($variants as $item)
-                                        <option {{ $item->title == "Size" ? 'selected':'' }}>{{ $item->title }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td class="col-md-9">
-                                    <select name="product_variant2[]" id="selectProductVariantPrice2" class="select_product_variant_price select_1 multiple-select col-md-12" multiple="multiple">
-                                        @foreach ($product_variants2 as $product_variant2)
-                                        <option value="{{ $product_variant2->id }}">
-                                            {{ $product_variant2->variant ?? '' }}
+                                    <select name="" id="selectProductVariantPrice" class="select_product_variant_price select_1 multiple-select col-md-12" multiple="multiple">
+                                        @foreach ($product_variants as $product_variant)
+                                        <option value="{{ $product_variant->id }}">
+                                            {{ $product_variant->variant ?? '' }}
                                         </option>
                                         @endforeach
                                     </select>
@@ -184,11 +164,6 @@
 <script>
     $(document).ready(function(){
         // $('.multiple-select').select2();
-
-        $('#no_pointer_use1').attr("style", "pointer-events: none;");
-        $('#no_pointer_use2 option:not(:selected)').prop('disabled', true);
-
-
     });
 </script>
 
@@ -206,8 +181,38 @@
    
    
     $('.add_another_row').on('click', function() {
-       //addRow('productVariantPriceTable');
+       addRow('productVariantPriceTable');
     });
+  var i = 1;
+    function addRow(tableId) {
+       i++;
+       
+                        var newRow = `<tr>
+                            <td class="col-md-3">
+                                <select class="form-control col-md-12" name="product_variant"
+                                    onchange="loadProductVariants(this.value)">
+                                    <option value="">Choose</option>
+                                    @foreach ($variants as $item)
+                                    <option>{{ $item->title }}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td class="col-md-9">
+                                <select name="" id="selectProductVariantPrice`+i+`" class="select_product_variant_price select_`+i+` multiple-select col-md-12" multiple="multiple">
+                                    @foreach ($product_variants as $product_variant)
+                                    <option value="{{ $product_variant->id }}">
+                                        {{ $product_variant->variant ?? '' }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </td>
+                        </tr>`;
+                        var newRow1 = "<tr><td>dasdad</td></tr>";
+       $('#'+tableId).find('tbody:last-child').append(newRow);
+   
+      $('.select_' + i).select2();
+   
+   };
    
 
 
@@ -233,12 +238,10 @@
         for (var i = 0; i<options_total; i++) {
             var row = '<tr>\
                 <td>\
-                    <div></div>\
-                <td>\
-                    <input type="text" name="price[]" size="30" />\
+                    <input type="text" name="dest[]" size="30" />\
                 </td>\
                 <td>\
-                    <input type="text" name="stock[]" size="35" />        \
+                    <input type="text" name="destsub[]" size="35" />        \
                 </td>\
             </tr>';
             row = $(row);

@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\Variant;
 
-class VariantSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +11,6 @@ class VariantSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Variant::class, 5)->create();   
+        factory(App\Models\User::class, 10)->create();
     }
 }
